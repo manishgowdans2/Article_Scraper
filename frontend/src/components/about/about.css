@@ -1,0 +1,26 @@
+.about{
+  width: 50%;
+  float: right;
+}
+
+.about1{
+  width: 50%;
+  float: left;
+}
+.text3{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 70px;
+  color:darkblue;
+  margin-left: 40%;
+}
+
+.text4{
+
+  margin-left: 10%;
+}
+
+.slide{
+  width: 50%;
+  height: 50%;
+  margin-left: 25%;
+}
