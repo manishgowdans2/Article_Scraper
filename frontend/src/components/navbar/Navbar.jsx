@@ -6,25 +6,11 @@ import './navbar.css'
 
 
 const Navbar = () => {
-   const { authUser,
-      setAuthUser,
-      isLoggedIn,
-      setIsLoggedIn} = useAuth();
+   const { authUser, logout } = useAuth();
 
-
-      const login = (e)=>{
-         e.preventDefault();
-         setIsLoggedIn(true);
-         setAuthUser({
-            Name:"Me"
-         });
-      }
-
-      const logout = (e)=>{
-         e.preventDefault();
-         setIsLoggedIn(false);
-         setAuthUser(null);
-      }
+  const handleLogout = () => {
+    logout();
+  };
 
 
    return (
@@ -51,13 +37,13 @@ const Navbar = () => {
                   Search
                </NavLink>
             </li>
-            {isLoggedIn? <li className="nav_item" >
+            {authUser? <li className="nav_item" >
                <NavLink onClick={(e)=>logout(e)} to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
                   Logout
                </NavLink>
             </li> : 
             <li className="nav_item" >
-            <NavLink onClick={(e)=>login(e)}  to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
+            <NavLink   to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
                Login
             </NavLink>
          </li> }
