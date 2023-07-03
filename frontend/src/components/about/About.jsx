@@ -4,37 +4,78 @@ import "./about.css"
 import Slide from 'react-reveal/Slide'
 import { Button, TextField, Link } from "@material-ui/core";
 import Paper from "../assets/paper.jpg"
+import news from "../assets/news.svg"
 
 const About = () => {
   return (
-    <div className='full'>
-      <div className='about'>
-        <Slide right duration={1600}>
-          <div className='text3'>
-            Hello
+    <>
+      <div>
+        <div className='about'>
 
-          </div>
-        </Slide>
+          <Slide right duration={1600}>
+            <div className='text3'>
+              What is Article Scraping?
 
-        <Slide right duration={1700}>
-          <div className='text4'>
-            We are very nice people
-            we will not harm you
+            </div>
+          </Slide>
 
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          <Slide right duration={1700}>
+            <div className='text4'>
+              Article scraping, also known as web scraping or content scraping, refers to the automated process of extracting information or content from websites. It involves using software tools or scripts to crawl through web pages, collect data, and store it for further analysis or use.
+              <div className='text5'>
 
-          </div>
-        </Slide>
+                Article scraping typically involves extracting specific pieces of information from web pages, such as article titles, authors, dates, text content, images, or other relevant data. This data can be collected from various sources, including news websites, blogs, online forums, or any website that contains publicly accessible information.
+              </div>
+
+            </div>
+          </Slide>
+        </div>
+
+        
+        <div className='about1'>
+          <Slide left duration={1500}>
+            <div className='animate'>
+              <img className='slide' src={Paper} />
+            </div>
+          </Slide>
+        </div>
+
       </div>
-      <div className='about1'>
-        <Slide left duration={1500}>
-          <div className='animate'>
-            <img className='slide' src={Paper} />
-          </div>
-        </Slide>
+
+
+
+
+
+
+      <div className='full'>
+        <div className='about'>
+
+          <Slide right duration={1500}>
+            <div className='animate'>
+              <img className='slide' src={news} />
+            </div>
+          </Slide>
+
+        </div>
+        <div className='about1'>
+          <Slide left duration={1600}>
+            <div className='text3'>
+              Research on Topics
+
+            </div>
+          </Slide>
+
+          <Slide left duration={1700}>
+            <div className='text4'>
+
+
+            </div>
+          </Slide>
+        </div>
+
       </div>
 
-    </div>
+    </>
   )
 }
 

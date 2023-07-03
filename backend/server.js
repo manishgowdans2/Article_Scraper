@@ -12,6 +12,17 @@ const app = express();
 
 
 
+const cors = require('cors');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+
+
+
+
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +30,14 @@ app.use(bodyParser.json());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
+
 }
+
+
+  // Middleware
+  app.use(cors());
+  app.use(express.json());
+  app.use('/uploads', express.static('uploads'));
 
 // Morgan loggers.
 app.use(logger('dev'));
@@ -28,7 +46,149 @@ morganBody(app, {
   logReqUserAgent: false
 });
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://0.0.0.0:27017/nyt-scrape", { promiseLibrary: bluebird });
+////////////////////////////////////////////////////////////////
+
+//user schema
+const User = mongoose.model('users', {
+  username: String,
+  email: String,
+  password: String,
+});
+
+//login
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'secret-key');
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});  
+
+
+  
+// Register a new user
+app.post('/register', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Check if the email already exists in the database
+    const existingUser = await User.findOne({ email });
+    console.log(existingUser)
+    if (existingUser) {
+      return res.status(409).json({ error: 'Email already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
+
+    res.json({ message: 'User registered successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+    console.log('Error registering user:', error);
+  }
+});
+w
+app.get('/api/quote', async (req, res) => {
+
+  const token = req.headers['x-access-token']
+  try{
+      const decoded = jwt.verify(token, 'secret123')
+      const email = decoded.email
+      // console.log(email);
+      const user = await User.findOne({ email: email })
+
+      return res.json({ status: 'ok' })
+  } catch(err){
+      console.log(err)
+      res.json({ status: 'error', error: 'invalid token'})
+  } 
+})
+
+
+/////////////////////////////////////////////////////////
+
+
+
+// Article model
+const Article = mongoose.model('writes', {
+  title: String,
+  content: String,
+  imageUrl: String,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+}); 
+
+
+// Create a new article with photo upload (requires authentication)
+app.post('/write', upload.single('image'), authenticateToken, async (req, res) => {
+  const { title, content } = req.body;
+  const imageUrl = req.file ? req.file.path : '';
+  const userId = req.user.userId;
+
+  try {
+    const article = new Article({ title, content, imageUrl, author: userId });
+    await article.save();
+    res.json(article);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get all articles
+app.get('/write', async (req, res) => {
+  try {
+    const article = await Article.find().populate('author');
+    res.json(article);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+    console.log(error)
+  }
+});
+
+// Middleware to authenticate the user
+function authenticateToken(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  jwt.verify(token, 'secret-key', (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+
+    req.user = user;
+    next();
+  });
+}
+
+
+
+/////////////////////////////////////////////////////////
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://0.0.0.0:27017/article_scrape", { promiseLibrary: bluebird });
+
+
+
 
 // Define API routes here
 const routes = require('./routes/api/index');
@@ -41,5 +201,17 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🌎 ==> Server now on port ${PORT}!`);
+  console.log(`Server now on port ${PORT}!`);
 });
+
+
+
+
+
+
+
+
+
+
+
+

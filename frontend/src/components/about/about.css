@@ -5,18 +5,21 @@
 
 .about1{
   width: 50%;
-  float: left;
+
 }
 .text3{
   font-family: 'Times New Roman', Times, serif;
-  font-size: 70px;
+  font-size: 50px;
   color:darkblue;
-  margin-left: 40%;
+  margin-left: 10%;
 }
 
 .text4{
+ 
+}
+.text5{
+  margin-top: 1%;
 
-  margin-left: 10%;
 }
 
 .slide{

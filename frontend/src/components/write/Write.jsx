@@ -1,65 +1,81 @@
+import React, { useEffect, useState } from 'react';
+import Navbar from '../navbar/Navbar';
+import axios from 'axios';
+import "./write.css"
 
-import GoogleLogin from 'react-google-login';
-import { useState } from 'react';
+const Write = () => {
+  const [articles, setArticles] = useState([]);
 
-function Write() {
-  const [loginData, setLoginData] = useState(
-    localStorage.getItem('loginData')
-      ? JSON.parse(localStorage.getItem('loginData'))
-      : null
-  );
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/write')
+      .then((response) => setArticles(response.data))
+      .catch((error) => console.error('Error fetching articles:', error));
+  }, []);
 
-  const handleFailure = (error) => {
-    alert('Google login failed. Reason: ' + error.message);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('image', image);
+
+    axios
+      .post('http://localhost:3001/write', formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((response) => console.log('Article created:', response.data))
+      .catch((error) => console.error('Error creating article:', error));
+
+    setTitle('');
+    setContent('');
+    setImage(null);
   };
-
-  const handleLogin = async (googleData) => {
-    const res = await fetch('/api/google-login', {
-      method: 'POST',
-      body: JSON.stringify({
-        token: googleData.tokenId,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-   
-    });
-
-    const data = await res.json();
-    setLoginData(data);
-    localStorage.setItem('loginData', JSON.stringify(data));
-    console.log(googleData)
-  };
-  const handleLogout = () => {
-    localStorage.removeItem('loginData');
-    setLoginData(null);
-  };
-
-
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>React Google Login App</h1>
-        <div>
-          {loginData ? (
-            <div>
-              <h3>You logged in as {loginData.email}</h3>
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-          ) : (
-            <GoogleLogin
-              clientId="142988580499-sebkf09f5t8b25ae4tntmt7titcll43j.apps.googleusercontent.com"
-              buttonText="Log in with Google"
-              onSuccess={handleLogin}
-              onFailure={handleFailure}
-              cookiePolicy={'single_host_origin'}
-            ></GoogleLogin>
-          )}
-        </div>
-      </header>
+    <>
+      <Navbar />
+
+      <div className='write'>
+        <div className='custom2'>Create New Article</div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="title">Title:</label>
+            <input type="text" id="title" value={title} onChange={(event) => setTitle(event.target.value)} />
+          </div>
+          <div>
+            <label htmlFor="content">Content:</label>
+            <textarea id="content" value={content} onChange={(event) => setContent(event.target.value)} />
+          </div>
+          <div>
+            <label htmlFor="image">Image:</label>
+            <input type="file" id="image" onChange={(event) => setImage(event.target.files[0])} />
+          </div>
+          <button className='write_btn' type="submit">Submit</button>
+        </form>
+      </div>
+<div className='custom'>Custom Articles</div>
+      <div className="article-container">
+        
+  {articles.map((article) => (
+    <div className="article-card" key={article._id}>
+      <h3>{article.title}</h3>
+      <p>{article.content}</p>
+      {article.imageUrl && <img src={`http://localhost:3001/${article.imageUrl}`} alt="Article" />}
+      <p className="author">Author: {article.author ? article.author.username : 'Unknown'}</p>
     </div>
+  ))}
+</div>
+
+    </>
   );
-}
+};
 
 export default Write;

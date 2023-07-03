@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Col, Row, Container } from "../search/Grid";
-import Jumbotron from "../search/Jumbotron";
 import API from "../../utils/API";
-import ArticleCard from "../search/ArticleCard";
+import ArticleCard from "../search/ArticleCard/ArticleCard";
 import Navbar from "../navbar/Navbar";
 
 class Saved extends Component {
@@ -26,9 +24,10 @@ class Saved extends Component {
 
   render() {
     return (
-         
-      <div>
-        <Navbar/>
+         <>
+          <Navbar/>
+      <div className="card-body">
+       
       
             {this.state.savedArticles.map((article, i) => (
               <ArticleCard 
@@ -43,6 +42,7 @@ class Saved extends Component {
             ))}
         
       </div>
+      </>
    
     );
   }
