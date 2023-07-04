@@ -5,6 +5,7 @@ import Slide from 'react-reveal/Slide'
 import { Button, TextField, Link } from "@material-ui/core";
 import Paper from "../assets/paper.jpg"
 import news from "../assets/news.svg"
+import { NavLink } from 'react-router-dom'
 
 const About = () => {
   return (
@@ -60,16 +61,26 @@ const About = () => {
         <div className='about1'>
           <Slide left duration={1600}>
             <div className='text3'>
-              Research on Topics
+             Write Article as an Author
 
             </div>
           </Slide>
 
           <Slide left duration={1700}>
-            <div className='text4'>
+            <div className='text6'>
 
+           
+            As an author, creating a news article offers several benefits. Firstly, it allows you to express your thoughts and ideas on a particular topic, giving you a platform to share your insights and expertise.
+            <div className='text7'>
+            In order to write an article register your self to become an author:
 
+            
             </div>
+
+            <NavLink to='/login' className='btn'>Become an Author</NavLink>
+           
+            </div>
+          
           </Slide>
         </div>
 

@@ -16,7 +16,7 @@ const Login = () => {
     axios.post('http://localhost:3001/login', { username, password })
       .then((response) => {
         localStorage.setItem('token', response.data.token);
-        window.location.href = '/';
+        window.location.href = '/write';
         setErrorMessage('Login Successful');
       })
       .catch((error) => console.error('Error logging in:', error));
@@ -29,7 +29,7 @@ const Login = () => {
     <>
     <Navbar/>
     <div className='login'>
-    <h2>Login</h2>
+    <h2>Login as Author</h2>
 {errorMessage}
     <form className='form' onSubmit={handleSubmit}>
       <div>
@@ -43,9 +43,11 @@ const Login = () => {
       <button className='login_btn' type="submit">Submit</button>
     
     </form>
-    New User ? then <Link to='/register'>Register</Link>
+    
   </div>
-
+  <div className="type">
+  New Author ? then please <Link to='/register'>Register</Link> yourself
+  </div>
 
 
  

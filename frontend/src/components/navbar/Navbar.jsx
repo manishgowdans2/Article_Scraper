@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 
 import { NavLink } from 'react-router-dom'
-import { useAuth} from "../../context/AuthContext"
+
 import './navbar.css'
 
 
 const Navbar = () => {
-   const { authUser, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-  };
 
 
    return (
@@ -37,16 +33,12 @@ const Navbar = () => {
                   Search
                </NavLink>
             </li>
-            {authUser? <li className="nav_item" >
-               <NavLink onClick={(e)=>logout(e)} to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
-                  Logout
-               </NavLink>
-            </li> : 
+          
             <li className="nav_item" >
-            <NavLink   to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
-               Login
+            <NavLink   to='/login' className={navClass => navClass.isActive ? "active__link" : ""}>
+                Author
             </NavLink>
-         </li> }
+         </li> 
 
             
 

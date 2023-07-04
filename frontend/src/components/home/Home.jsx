@@ -6,6 +6,7 @@ import news2 from "../assets/news2.png"
 import Slide from 'react-reveal/Slide'
 import Paper from "../assets/paper.jpg"
 import news from "../assets/news.svg"
+import { NavLink } from 'react-router-dom'
 
 
 
@@ -39,7 +40,7 @@ const Home = () => {
 
             </div>
             <div className='three'>
-                <button className='btn'>Explore More</button>
+                <NavLink to='/save' className='btn'>Explore More</NavLink>
             </div>
 
            

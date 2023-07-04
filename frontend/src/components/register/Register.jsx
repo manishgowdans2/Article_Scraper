@@ -50,7 +50,11 @@ const Register = () => {
         </div>
         <button className="reg_btn" type="submit">Submit</button>
       </form>
-     Already an User? Then <Link to='/login'>Login</Link>
+     
+    </div>
+
+    <div className="type">
+    Already a registered Author? Then <Link to='/login'>Login</Link>
     </div>
 
     </>

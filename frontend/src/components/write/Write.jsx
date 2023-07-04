@@ -29,9 +29,10 @@ const Write = () => {
       .post('http://localhost:3001/write', formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
+
         },
       })
-      .then((response) => console.log('Article created:', response.data))
+      .then((response) =>{window.location.href = '/write'; console.log('Article created:', response.data)})
       .catch((error) => console.error('Error creating article:', error));
 
     setTitle('');
@@ -61,18 +62,18 @@ const Write = () => {
           <button className='write_btn' type="submit">Submit</button>
         </form>
       </div>
-<div className='custom'>Custom Articles</div>
+      <div className='custom'>Custom Articles</div>
       <div className="article-container">
-        
-  {articles.map((article) => (
-    <div className="article-card" key={article._id}>
-      <h3>{article.title}</h3>
-      <p>{article.content}</p>
-      {article.imageUrl && <img src={`http://localhost:3001/${article.imageUrl}`} alt="Article" />}
-      <p className="author">Author: {article.author ? article.author.username : 'Unknown'}</p>
-    </div>
-  ))}
-</div>
+
+        {articles.map((article) => (
+          <div className="article-card" key={article._id}>
+            <h3>{article.title}</h3>
+            <p>{article.content}</p>
+            {article.imageUrl && <img src={`http://localhost:3001/${article.imageUrl}`} alt="Article" />}
+            <p className="author">Author: {article.author ? article.author.username : 'Unknown'}</p>
+          </div>
+        ))}
+      </div>
 
     </>
   );

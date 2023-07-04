@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const { MongoClient } = require('mongodb');
 
 const bluebird = require('bluebird');
 const mongoose = require('mongoose');
@@ -106,22 +107,7 @@ app.post('/register', async (req, res) => {
     console.log('Error registering user:', error);
   }
 });
-w
-app.get('/api/quote', async (req, res) => {
 
-  const token = req.headers['x-access-token']
-  try{
-      const decoded = jwt.verify(token, 'secret123')
-      const email = decoded.email
-      // console.log(email);
-      const user = await User.findOne({ email: email })
-
-      return res.json({ status: 'ok' })
-  } catch(err){
-      console.log(err)
-      res.json({ status: 'error', error: 'invalid token'})
-  } 
-})
 
 
 /////////////////////////////////////////////////////////
@@ -185,9 +171,19 @@ function authenticateToken(req, res, next) {
 
 /////////////////////////////////////////////////////////
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://0.0.0.0:27017/article_scrape", { promiseLibrary: bluebird });
+mongoose.connect("mongodb://0.0.0.0:27017/article_scrape", { promiseLibrary: bluebird });
 
 
+// const uri = "mongodb+srv://manishgowdans2002:1lOcxaraJsrg6wMp@cluster0.4nx3awy.mongodb.net/article_scrape?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// client.connect((err) => {
+//   if (err) {
+//     console.error('Failed to connect to MongoDB Atlas:', err);
+//     return;
+//   }
+//   console.log('Connected to MongoDB Atlas');
+// });
 
 
 // Define API routes here
