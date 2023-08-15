@@ -7,6 +7,8 @@ import './navbar.css'
 
 const Navbar = () => {
 
+   const hasToken = localStorage.getItem('token')
+
 
 
    return (
@@ -35,9 +37,13 @@ const Navbar = () => {
             </li>
           
             <li className="nav_item" >
-            <NavLink   to='/login' className={navClass => navClass.isActive ? "active__link" : ""}>
+            {!hasToken ? (<NavLink   to='/login' className={navClass => navClass.isActive ? "active__link" : ""}>
                 Author
+            </NavLink>) : (<NavLink   to='/write' className={navClass => navClass.isActive ? "active__link" : ""}>
+               Articles
             </NavLink>
+
+            )}
          </li> 
 
             

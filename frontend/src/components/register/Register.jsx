@@ -54,7 +54,7 @@ const Register = () => {
     </div>
 
     <div className="type">
-    Already a registered Author? Then <Link to='/login'>Login</Link>
+    Already a registered Author? Then <Link to='/login'><span id='reg'>Login</span></Link>
     </div>
 
     </>

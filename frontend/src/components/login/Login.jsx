@@ -46,7 +46,7 @@ const Login = () => {
     
   </div>
   <div className="type">
-  New Author ? then please <Link to='/register'>Register</Link> yourself
+  New Author ? then please <Link to='/register'><span id='reg'>Register</span></Link> yourself
   </div>
 
 
